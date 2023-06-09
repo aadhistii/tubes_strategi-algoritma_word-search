@@ -273,14 +273,14 @@
             <ul class="list-unstyled li-space-lg">
               <li class="media">
                 <i class="fas fa-square"></i>
-                <div class="media-body">Brute Force, Kompleksitas sebesar O(N^4*M), yang mana N adalah ukuran sisi tabel dan M adalah panjang maksimum kata yang ingin dicari</div>
+                <div class="media-body">Brute Force, kompleksitas konstan sebesar O(8*L*M*N) untuk seluruh kasus (<i>worst case</i> hingga <i>best case</i>), yang mana L merupakan target kata yang dicari, M jumlah baris tabel, dan N jumlah kolom tabel</div>
               </li>
               <li class="media">
                 <i class="fas fa-square"></i>
-                <div class="media-body">Dynamic Programming, Komplesitas pada dynamic programming memiliki O(N^3*M)di mana N adalah ukuran sisi tabel dan M adalah panjang maksimum kata yang ingin dicari.</div>
+                <div class="media-body">Dynamic Programming, pada <i>worst case</i> dan <i>average case</i> memiliki kompleksitas O(8*X*M*N*) yang mana X merupakan maksimum kemunculan karakter unik pada target kata (<i>worst case</i> terjadi ketika seluruh karakter pada target kata yang dicari sama), dan <i> best case</i> O(8*M*N) yaitu ketika seluruh karakter pada kata merupakan karakter unik</div>
               </li>
             </ul>
-            <p>Berdasarkan hasil analisis, dapat disimpulkan bahwa algoritma dynamic programming lebih efisien dari pada brute force dalam mencari kata. Selain itu, kompleksitas algoritma dynamic programming (O(N^3M)) juga lebih kecil dibandingkan dengan kompleksitas brute force (O(N^4M)). Hal ini menunjukkan bahwa dynamic programming dapat memberikan kinerja yang lebih baik dalam mencari kata pada tabel dengan ukuran dan panjang kata yang sama.</p>
+            <p>Berdasarkan hasil analisis, dapat disimpulkan bahwa algoritma dynamic programming lebih efisien dari pada Brute Force dalam mencari kata. Selain itu, kompleksitas algoritma Dynamic Programming (O(8*M*N)) juga lebih kecil dibandingkan dengan kompleksitas brute force (O(8*L*M*N)). Hal ini menunjukkan bahwa Dynamic Programming dapat memberikan kinerja yang lebih baik dalam mencari kata pada tabel dengan ukuran dan panjang kata yang sama.</p>
           </div> <!-- end of text-container -->
         </div> <!-- end of col -->
         <div class="col-lg-6">
