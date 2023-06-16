@@ -10,7 +10,7 @@ endfunction
 
 DIR = [{0, -1}, {-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}] {direction/arah} 
 
-Inti Algoritma Brute Force 
+Inti Algoritma Brute Force
 (iterative approach) 
 
 procedure solveBruteForce(in grid : array of string, target : string) 
@@ -158,5 +158,5 @@ endprocedure
   
 Kompleksitas: 
 worst case (grid and target override one character) = bruteforce 
-average case = O(8 * M * N * len(unique char in target)) 
+average case = O(8 * M * N * max(frec unique char in target)) 
 best case (all character in target and grid is unique) = O(8 * M * N)
