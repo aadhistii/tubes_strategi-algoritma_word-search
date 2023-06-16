@@ -5,7 +5,7 @@ using namespace std;
 class BruteForce {
 private:
   // true = use recursive approach, false = use iterative approach
-  static const bool REC = true;
+  static const bool REC = false;
   const vector<pair<int, int>> DIRECTION = {
     {0, -1}, {-1, -1}, {-1, 0}, {-1, 1},
     {0, 1}, {1, 1}, {1, 0}, {1, -1}

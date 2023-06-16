@@ -109,13 +109,13 @@ private:
 
         this->prev[dir][idx] = nullptr;
 
-        this->meta[dir][idx] = meta; // meta pertama
-        memo->meta[dir][idx + 1] = meta; // nunjuk meta yg sama dgn sblm nya
-      } else if (empty(dir, idx)) { // kalau depan punya meta tp huruf yg skrg gapunya
-        memo->meta[dir][idx + 1]->head[dir] = this; //
+        this->meta[dir][idx] = meta; 
+        memo->meta[dir][idx + 1] = meta; 
+      } else if (empty(dir, idx)) { 
+        memo->meta[dir][idx + 1]->head[dir] = this;
         memo->meta[dir][idx + 1]->size[dir] += 1;
 
-        this->prev[dir][idx] = nullptr; //
+        this->prev[dir][idx] = nullptr;
 
         this->meta[dir][idx] = memo->meta[dir][idx + 1];
       } else if (memo->empty(dir, idx + 1)) {

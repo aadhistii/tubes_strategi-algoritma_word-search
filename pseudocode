@@ -1,0 +1,162 @@
+Untuk Semua Algoritma  
+function traversable(M, N, row, col : integer) -> boolean 
+algoritma 
+  return (0 <= row and row < M) and (0 <= col and col < N) 
+endfunction 
+
+function indexable(idx : integer, target : string) -> boolean 
+  return (0 <= idx) and (idx < len(target)) 
+endfunction 
+
+DIR = [{0, -1}, {-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}] {direction/arah} 
+
+Inti Algoritma Brute Force 
+(iterative approach) 
+
+procedure solveBruteForce(in grid : array of string, target : string) 
+kamus 
+  M, N, x, delta_x, delta_y : integer 
+  kata : string 
+algoritma 
+  M = grid.size() {mendapatkan panjang baris/banyak elemen dalam array} 
+  N = grid[0].size() {mendapatkan panjang kolom dalam satu baris yaitu elemen pertama array} 
+  for i <- 0 to M - 1 do 
+    for j <- 0 to N - 1 do 
+      for k in DIR {tipe data pair, jumlah/panjang elemen array of pair = 8} 
+        x = 0 
+        delta_x = i 
+        delta_y = j 
+        for l <- 0 to len(target) - 1 do {panjang kata yg dicari}  
+          if traversable(M, N, delta_x, delta_y) and indexable(x, kata) then 
+            kata += grid[i][j] {string concat kata untuk pendekatan bruteforce} 
+            x = x + 1 
+            delta_x = M + k[0] 
+            delta_y = N + k[1] 
+          endif 
+          if kata == target then {lalu dibandingkan dengan string target langsung} 
+            result.append(i, j, k) 
+          endif 
+        endfor 
+      endfor 
+    endfor 
+  endfor 
+endprocedure 
+  
+Kompleksitas: 
+konstan O(8 * M * N * |target|) 
+  
+Inti Algoritma Dynamic Programming 
+  
+type Meta : < 
+  head, tail : pointer 
+  size : integer 
+  taken : boolean 
+> 
+  
+type Memo : < 
+  row, col, length : integer 
+  karakter : character 
+  meta : Meta 
+  
+  procedure make_chain(in dir, idx : integer, in/out memo : Memo) 
+  algoritma 
+    if empty(dir) then 
+      this->next[dir].resize(len(target)).assign(null) 
+      this->prev[dir].resize(len(target)).assign(null)    
+      this->meta[dir].resize(len(target)).assign(null)  
+    endif 
+     
+    if memo->empty(dir) then 
+      memo->next[dir].resize(len(target)).assign(null) 
+      memo->prev[dir].resize(len(target)).assign(null) 
+      memo->meta[dir].resize(len(target)).assign(null) 
+    endif 
+     
+    next[dir][idx] = memo 
+    memo->prev[dir][idx+1] = this 
+     
+    if empty(dir, idx) and memo->empty(dir, idx+1) 
+      make new Meta as meta 
+      meta->head[dir] = this 
+      meta->tail[dir] = memo 
+      meta->size[dir] = 2 
+      this->prev[dir][idx] = null 
+      this->meta[dir][idx] = meta 
+      meta->meta[dir][idx+1] = meta 
+    else if empty(dir, idx) then 
+      memo->meta[dir][idx+1]->head[dir] = this 
+      memo->meta[dir][idx+1]->size[dir] += 1 
+      this->prev[dir][idx] = null 
+      this->meta[dir][idx] = memo->meta[dir][dir+1] 
+    else if memo->empty(dir, idx+1) then 
+      this->meta[dir][idx]->tail[dir] = memo 
+      this->meta[dir][idx]->size[dir] += 1 
+      memo->meta[dir][idx+1] = this->meta[dir][idx]  
+    endif 
+  endprocedure 
+> 
+  
+procedure solveDynamicProgramming(in grid : array of string, target : string) 
+kamus 
+  M, N, x, delta_x, delta_y, row, col, dir, result_row, result_col: integer 
+  char : character 
+  index : list of character 
+  memos : vector of Memo 
+   
+algoritma 
+  M = grid.size() {mendapatkan panjang baris/banyak elemen dalam array} 
+  N = grid[0].size() {mendapatkan panjang kolom dalam satu baris yaitu elemen pertama array} 
+  
+  for i <- 0 to len(target) - 1 
+    index[target[i]].insert(i) 
+  endfor 
+  
+  memos.resize(M).assign(M, vector Memo(m, null)) 
+  
+  for row <- 0 to M - 1 do 
+    for col <- 0 to N - 1 do 
+      kata = grid[row][col] 
+  
+      if indexes.find(char) == indexes.end() then {cari adanya char dalam target kata, kalau gaada skip} 
+        continue 
+      endif 
+  
+      if memos[row][col] == null then 
+        memos[row][col] = new Memo(row, col, char, len(target)) 
+      endif 
+  
+      for i <- 0 to len(DIR) - 1 do 
+        dir = DIR[i] 
+        delta_x = row + dir[0] 
+        delta_y = col + dir[1] 
+        if not traversable(M, N, delta_x, delta_y) then 
+          continue 
+        endif 
+  
+        for idx in indexes[char] then 
+          if indexable(idx+1) and grid[delta_x][delta_y] == target[idx+1] then 
+            if memos[delta_x][delta_y] == null then 
+              memos[delta_x][delta_y] = new Memo(delta_x, delta_y, grid[delta_x][delta_y], len(target)) 
+            endif 
+  
+            memos[row][col]->make_chain(i, idx, memos[delta_x][delta_y]) 
+  
+            if memos[row][col]->meta[i][idx]->size[i] == len(kata) then {kalau size sama dengan panjang target} 
+              if not memos[row][col]->meta[i][idx]->taken then {kalau belum taken atau belum diambil hasil} 
+                result_row = memos[row][col]->meta[i][idx]->head[i]->row 
+                result_col = memos[row][col]->meta[i][idx]->head[i]->col 
+                result.append(result_row, result_col, dir) 
+                memos[row][col]->meta[i][idx]->taken = true 
+              endif 
+            endif 
+          endif 
+        endfor 
+      endfor 
+    endfor 
+  endfor 
+endprocedure 
+  
+Kompleksitas: 
+worst case (grid and target override one character) = bruteforce 
+average case = O(8 * M * N * len(unique char in target)) 
+best case (all character in target and grid is unique) = O(8 * M * N)
